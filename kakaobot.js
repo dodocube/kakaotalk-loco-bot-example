@@ -6,6 +6,7 @@
 //아이디로 닉네임
 
 // 1484줄부터 내가 추가한거
+// 5373
 
 
 "use strict";
@@ -45,11 +46,13 @@ const { Long } = require('bson');
 const http = require('http');
 const ipinfo = require('ipinfo');
 const ytdl = require('ytdl-core');
+const fetch = require('node-fetch');
 let app = express();
 app.set('trust proxy', true);
 const getDnsIp = require("ip");
 const { kMaxLength } = require('buffer');
 const { channel } = require('diagnostics_channel');
+const { date } = require('is_js');
 let getInfo;
 try {
     getInfo = fs.readFileSync('./info.json', 'utf8');
@@ -57,7 +60,7 @@ try {
     console.log(e);
 };
 getInfo = JSON.parse(getInfo);
-let { email, pw, deviceName, deviceUUID, prefix, autoAdmin, openVerify, useCustomCode, openCustomCode, banKey, ipPort } = getInfo;
+let { email, pw, deviceName, deviceUUID, prefix, autoAdmin, openVerify, useCustomCode, openCustomCode, banKey, ipPort, dikoHook } = getInfo;
 ipPort *= 1;
 let ipLog_local;
 let ipLog_admin = getDnsIp.address();
@@ -74,8 +77,8 @@ let defConfig = {
     // eslint-disable-next-line max-len
     locoPEMPublicKey: `-----BEGIN PUBLIC KEY-----\nMIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEApElgRBx+g7sniYFW7LE8ivrwXShKTRFV8lXNItMXbN5QSC8vJ/cTSOTS619Xv5Zx7xXJIk4EKxtWesEGbgZpEUP2xQ+IeH9oz0JxayEMvvD1nVNAWgpWE4pociEoArsK7qY3YwXb1CiDHo9hojLv7djbo3cwXvlyMh4TUrX2RjCZPlVJxk/LVjzcl9ohJLkl3eoSrf0AE4kQ9mk3+raEhq5Dv+IDxKYX+fIytUWKmrQJusjtre9oVUX5sBOYZ0dzez/XapusEhUWImmB6mciVXfRXQ8IK4IH6vfNyxMSOTfLEhRYN2SMLzplAYFiMV536tLS3VmG5GJRdkpDubqPeQIBAw==\n-----END PUBLIC KEY-----`,
     agent: 'win32',
-    version: '3.2.3',
-    appVersion: '3.2.3.2698',
+    version: '3.3.8',
+    appVersion: '3.3.8.3058',
     osVersion: '10.0',
     // 2 == sub, 1 == main
     deviceType: 2,
@@ -95,13 +98,13 @@ let editConfig = {
     // eslint-disable-next-line max-len
     locoPEMPublicKey: `-----BEGIN PUBLIC KEY-----\nMIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEApElgRBx+g7sniYFW7LE8ivrwXShKTRFV8lXNItMXbN5QSC8vJ/cTSOTS619Xv5Zx7xXJIk4EKxtWesEGbgZpEUP2xQ+IeH9oz0JxayEMvvD1nVNAWgpWE4pociEoArsK7qY3YwXb1CiDHo9hojLv7djbo3cwXvlyMh4TUrX2RjCZPlVJxk/LVjzcl9ohJLkl3eoSrf0AE4kQ9mk3+raEhq5Dv+IDxKYX+fIytUWKmrQJusjtre9oVUX5sBOYZ0dzez/XapusEhUWImmB6mciVXfRXQ8IK4IH6vfNyxMSOTfLEhRYN2SMLzplAYFiMV536tLS3VmG5GJRdkpDubqPeQIBAw==\n-----END PUBLIC KEY-----`,
     agent: 'win32',
-    version: '3.3.7',
-    appVersion: '3.3.7.3028',
+    version: '3.3.8',
+    appVersion: '3.3.8.3058',
     osVersion: '10.0',
     // 2 == sub, 1 == main
     deviceType: 2,
     // 0 == wired(WIFI), 3 == cellular
-    netType: 3,
+    netType: 0,
     // 999: pc
     mccmnc: '999',
     countryIso: 'KR',
@@ -143,8 +146,8 @@ class Bot {
         let gggg_P_ID = "";
         let gggg_L_RES = "";
         let ver = "10.0.2";
-        let kakaoVer = "4.4.0";
-        let lastUpdate = "2022.08.21";
+        let kakaoVer = "4.5.1";
+        let lastUpdate = "2022.08.29";
         const ACC_EMAIL = _ACCOUNT.split(' ')[0];
         const ACC_PASSWORD = _ACCOUNT.split(' ')[1];
         const ACC_UUID = _ACCOUNT.split(' ')[2];
@@ -1587,7 +1590,9 @@ class Bot {
                 //channel.sendChat(JSON.stringify(data.getSenderInfo(channel)));
 
                 if (logMessage) {
+                    var today = new date();
                     console.log("[SERVER:" + channel.getDisplayName() + "][ID:" + id + "] " + data.text);
+                    discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", today.toLocaleTimeString(), channel.getDisplayName());
                 };
 
                 if (data.text == keyWord) {
@@ -3221,7 +3226,7 @@ class Bot {
                     };
                 };
 
-                if (data.text == "!test") {
+                /*if (data.text == "!test") {
                     /**
                      * 
                      * .append(new $AttachmentContent({
@@ -3234,7 +3239,7 @@ class Bot {
                             "msg": "",
                             "alt": "카카오 이모티콘"
                         }))
-                     */
+                     
                     channel.sendChat(
                         new $ChatBuilder()
                             .text("Search")
@@ -3254,7 +3259,7 @@ class Bot {
                             }))
                             .build(23)
                     );
-                };
+                };*/
 
                 if (data.text.startsWith(prefix + "답장 ")) {
                     if (adminList.includes(id + '')) {
@@ -4778,12 +4783,7 @@ class Bot {
             "\n" +
             "\n" +
             "\n[------------------패치노트------------------]" +
-            "\n|  1.  화면임티 명령어 추가" +
-            "\n|  2.  임티5 명령어 추가" +
-            "\n|  3.  블랙, 블랙해제 명령어 추가" +
-            "\n|  4.  내정보 명령어 추가" +
-            "\n|  5.  evalue 명령어 추가" +
-            "\n|  6.  방폭청소 명령어 추가" +
+            "\n|  1.  노드카카오 버전 패치" +
             "\n" +
             "\n" +
             "\n[------------------패치예정------------------]" +
@@ -5374,6 +5374,56 @@ function readableToBuffer(readable) {
         readable.on('end', () => resolve(Buffer.concat(chunks)));
     });
 }
+
+// https://discord.com/api/webhooks/1014867602968952843/zfc7bnuKpsEIQ1lCs23yf2ibdrOLzk6O0TJQGBu6zDSYfl6E6KBY8gVaZQF_70R5SpE5
+function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
+    gggg_P_ID = loginRes.result.userId;
+    var parms = {
+        "username": "ᴀᴄʜᴏᴏ ʙᴏᴛ",
+        "avatar_url": _kakaoChannel.getUserInfo({ userId: loginRes.result.userId }).originalProfileURL || "",
+        "content": "",
+        "embeds": [
+            {
+                "author": {
+                "name": who,
+                "icon_url": whoPf
+                },
+                "title": "Chat Logging",
+                "description": "LocoBot chat logging",
+                "color": 15258703,
+                "fields": [
+                    {
+                        "name": "room name",
+                        "value": where,
+                        "inline": true
+                    },
+                    {
+                        "name": "time",
+                        "value": when,
+                        "inline": true
+                    },
+                    {
+                        "name": what
+                    }
+                ],
+                "footer": {
+                    "text": "Powered by Node-kakao"
+                }
+            }
+        ]
+    }
+
+    fetch(dikoHook, {
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    }).then(res => {
+        console.log(res);
+    })
+}
+
 
 async function start() {
     console.clear();
