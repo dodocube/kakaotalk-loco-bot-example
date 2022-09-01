@@ -46,13 +46,14 @@ const { Long } = require('bson');
 const http = require('http');
 const ipinfo = require('ipinfo');
 const ytdl = require('ytdl-core');
-const fetch = __importDefault('node-fetch');
+//const fetch = __importDefault('node-fetch');
 let app = express();
 app.set('trust proxy', true);
 const getDnsIp = require("ip");
 const { kMaxLength } = require('buffer');
 const { channel } = require('diagnostics_channel');
 const { date } = require('is_js');
+import fetch from 'node-fetch'
 let getInfo;
 try {
     getInfo = fs.readFileSync('./info.json', 'utf8');
