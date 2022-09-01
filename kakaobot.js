@@ -1592,8 +1592,11 @@ class Bot {
                 if (logMessage) {
                     var today = new date();
                     console.log("[SERVER:" + channel.getDisplayName() + "][ID:" + id + "] " + data.text);
-                    today.toLocaleDateString('en-US');
-                    discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", today.toLocaleTimeString(), channel.getDisplayName());
+                    var hours = ('0' + today.getHours()).slice(-2);
+                    var minutes = ('0' + today.getMinutes()).slice(-2);
+                    var seconds = ('0' + today.getSeconds()).slice(-2);
+                    var timeString = hours + ':' + minutes + ':' + seconds;
+                    discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", timeString, channel.getDisplayName());
                 };
 
                 if (data.text == keyWord) {
