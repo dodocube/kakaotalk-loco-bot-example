@@ -5384,7 +5384,7 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
     gggg_P_ID = loginRes.result.userId;
     var parms = {
         "username": "ᴀᴄʜᴏᴏ ʙᴏᴛ",
-        "avatar_url": _kakaoChannel.getUserInfo({ userId: loginRes.result.userId }).originalProfileURL || "",
+        "avatar_url": "https://cdn.donmai.us/sample/c6/27/sample-c62707a4860be81689de8208dd2ab5b4.jpg",
         "content": "",
         "embeds": [
             {
