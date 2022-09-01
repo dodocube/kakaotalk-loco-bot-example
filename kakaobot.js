@@ -5421,10 +5421,9 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
     axios.post(dikoHook, JSON.stringify(parms), {
         headers: {
             "Content-Type": 'application/json',
-        },
-    })
-        .then((res) => {
-            console.log(res);
+        }
+    }).then((res) => {
+        console.log(res);
     })
 }
 
