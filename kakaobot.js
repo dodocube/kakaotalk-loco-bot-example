@@ -46,7 +46,7 @@ const { Long } = require('bson');
 const http = require('http');
 const ipinfo = require('ipinfo');
 const ytdl = require('ytdl-core');
-const fetch = require('node-fetch');
+const fetch = __importDefault('node-fetch');
 let app = express();
 app.set('trust proxy', true);
 const getDnsIp = require("ip");
