@@ -1592,6 +1592,7 @@ class Bot {
                 if (logMessage) {
                     var today = new date();
                     console.log("[SERVER:" + channel.getDisplayName() + "][ID:" + id + "] " + data.text);
+                    today.toLocaleDateString('en-US');
                     discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", today.toLocaleTimeString(), channel.getDisplayName());
                 };
 
