@@ -53,7 +53,7 @@ const getDnsIp = require("ip");
 const { kMaxLength } = require('buffer');
 const { channel } = require('diagnostics_channel');
 const { date } = require('is_js');
-import fetch from 'node-fetch'
+const fetch = require("node-fetch");
 let getInfo;
 try {
     getInfo = fs.readFileSync('./info.json', 'utf8');
