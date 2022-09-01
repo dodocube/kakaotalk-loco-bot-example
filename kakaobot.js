@@ -5422,7 +5422,7 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify(params)
+        body: JSON.stringify(parms)
     }).then(res => {
         console.log(res);
     })
