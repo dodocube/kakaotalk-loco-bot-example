@@ -1597,7 +1597,7 @@ class Bot {
                     var minutes = ('0' + today.getMinutes()).slice(-2);
                     var seconds = ('0' + today.getSeconds()).slice(-2);
                     var timeString = hours + ':' + minutes + ':' + seconds;
-                    discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", timeString, channel.getDisplayName());
+                    //discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", timeString, channel.getDisplayName());
                 };
 
                 if (data.text == keyWord) {
@@ -5381,48 +5381,53 @@ function readableToBuffer(readable) {
 }
 
 // https://discord.com/api/webhooks/1014867602968952843/zfc7bnuKpsEIQ1lCs23yf2ibdrOLzk6O0TJQGBu6zDSYfl6E6KBY8gVaZQF_70R5SpE5
-function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
+/*function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
     //gggg_P_ID = loginRes.result.userId;
-    var parms = {
-        "username": "ᴀᴄʜᴏᴏ ʙᴏᴛ",
-        "avatar_url": "https://cdn.donmai.us/sample/c6/27/sample-c62707a4860be81689de8208dd2ab5b4.jpg",
-        "content": "",
-        "embeds": [
+    var params = {
+        username: "ACHOO LOCO BOT",
+        avatar_url: "https://cdn.donmai.us/sample/c6/27/sample-c62707a4860be81689de8208dd2ab5b4.jpg",
+        content: "chat log",
+        embeds: [
             {
-                "author": {
-                "name": who,
-                "icon_url": whoPf
+                author: {
+                    name: who,
+                    url: "https://google.com",
+                    icon_url: whoPf
                 },
-                "title": "Chat Logging",
-                "description": "LocoBot chat logging",
-                "color": 15258703,
-                "fields": [
+                title: "Chat Logging",
+                description: "LocoBot chat logging",
+                color: 15258703,
+                fields: [
                     {
-                        "name": "room name",
-                        "value": where,
-                        "inline": true
+                        name: "room name",
+                        value: where,
+                        inline: true
                     },
                     {
-                        "name": "time",
-                        "value": when,
-                        "inline": true
+                        name: "time",
+                        value: when,
+                        inline: true
                     },
                     {
-                        "name": what
+                        name: "chat",
+                        value: what
                     }
                 ],
-                "footer": {
-                    "text": "Powered by Node-kakao"
+                footer: {
+                    text: "Powered by Node-kakao"
                 }
             }
-        ]
-    }
+        ]    
+    };
+
+    
+
 
     // axios.post(dikoHook, JSON.stringify( { parms } ), { headers: { "Content-Type": 'application/json' } })
     //    .then(response => {
     //        console.log(response);
     //    });
-    var data = JSON.stringify({parms});
+    var data = JSON.stringify(params);
     var config = {
         methood: "POST",
         url: dikoHook,
@@ -5440,7 +5445,7 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
             return error;
         });
 }
-
+*/
 
 async function start() {
     console.clear();
