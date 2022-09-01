@@ -5381,7 +5381,7 @@ function readableToBuffer(readable) {
 
 // https://discord.com/api/webhooks/1014867602968952843/zfc7bnuKpsEIQ1lCs23yf2ibdrOLzk6O0TJQGBu6zDSYfl6E6KBY8gVaZQF_70R5SpE5
 function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
-    gggg_P_ID = loginRes.result.userId;
+    //gggg_P_ID = loginRes.result.userId;
     var parms = {
         "username": "ᴀᴄʜᴏᴏ ʙᴏᴛ",
         "avatar_url": "https://cdn.donmai.us/sample/c6/27/sample-c62707a4860be81689de8208dd2ab5b4.jpg",
