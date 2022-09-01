@@ -53,7 +53,7 @@ const getDnsIp = require("ip");
 const { kMaxLength } = require('buffer');
 const { channel } = require('diagnostics_channel');
 const { date } = require('is_js');
-const fetch = require("node-fetch");
+const axios = require('axios');
 let getInfo;
 try {
     getInfo = fs.readFileSync('./info.json', 'utf8');
@@ -5418,14 +5418,13 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
         ]
     }
 
-    fetch(dikoHook, {
-        method: "POST",
+    axios.post(dikoHook, JSON.stringify(parms), {
         headers: {
-            'Content-type': 'application/json'
+            "Content-Type": 'application/json',
         },
-        body: JSON.stringify(parms)
-    }).then(res => {
-        console.log(res);
+    })
+        .then((res) => {
+            console.log(res);
     })
 }
 
