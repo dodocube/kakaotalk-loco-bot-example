@@ -53,6 +53,7 @@ const getDnsIp = require("ip");
 const { kMaxLength } = require('buffer');
 const { channel } = require('diagnostics_channel');
 const { date } = require('is_js');
+const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const axios = require('axios');
 let getInfo;
 try {
@@ -71,7 +72,7 @@ let ipLog_filter = true;
 let ipLog_usingServer = "None";
 let ipLog_adress = "";
 let adminList = [];
-
+const hook = new Webhook(dikoHook);
 let defConfig = {
     locoBookingHost: 'booking-loco.kakao.com',
     locoBookingPort: 443,
@@ -1597,7 +1598,7 @@ class Bot {
                     var minutes = ('0' + today.getMinutes()).slice(-2);
                     var seconds = ('0' + today.getSeconds()).slice(-2);
                     var timeString = hours + ':' + minutes + ':' + seconds;
-                    //discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", timeString, channel.getDisplayName());
+                    discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", timeString, channel.getDisplayName());
                 };
 
                 if (data.text == keyWord) {
@@ -5381,9 +5382,8 @@ function readableToBuffer(readable) {
 }
 
 // https://discord.com/api/webhooks/1014867602968952843/zfc7bnuKpsEIQ1lCs23yf2ibdrOLzk6O0TJQGBu6zDSYfl6E6KBY8gVaZQF_70R5SpE5
-/*function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
-    //gggg_P_ID = loginRes.result.userId;
-    var params = {
+function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
+    /*var params = {
         username: "ACHOO LOCO BOT",
         avatar_url: "https://cdn.donmai.us/sample/c6/27/sample-c62707a4860be81689de8208dd2ab5b4.jpg",
         content: "chat log",
@@ -5420,13 +5420,6 @@ function readableToBuffer(readable) {
         ]    
     };
 
-    
-
-
-    // axios.post(dikoHook, JSON.stringify( { parms } ), { headers: { "Content-Type": 'application/json' } })
-    //    .then(response => {
-    //        console.log(response);
-    //    });
     var data = JSON.stringify(params);
     var config = {
         methood: "POST",
@@ -5443,9 +5436,21 @@ function readableToBuffer(readable) {
         .catch((error) => {
             console.log(error);
             return error;
-        });
+        });*/
+    var embed = new MessageBuilder()
+    .setTitle("KakaoTalk Chat Logging")
+    .setAuthor(who, whopf, whoPf)
+    .addField('room name', where, true)
+    .addField('time', when, true)
+    .addField('chat', what)
+    .addField('#00b0f4')
+    .setDescription('LocoBot Chat Logging')
+    .setFooter('Powered by Node-Kakao')
+    .setTimestamp();
+    
+    hook.send(embed);
 }
-*/
+
 
 async function start() {
     console.clear();
