@@ -5418,13 +5418,27 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
         ]
     }
 
-    axios.post(dikoHook, JSON.stringify(parms), {
-        headers: {
-            "Content-Type": 'application/json',
-        }
-    }).then((res) => {
-        console.log(res);
-    })
+    // axios.post(dikoHook, JSON.stringify( { parms } ), { headers: { "Content-Type": 'application/json' } })
+    //    .then(response => {
+    //        console.log(response);
+    //    });
+    var data = JSON.stringify({parms});
+    var config = {
+        methood: "POST",
+        url: dikoHook,
+        headers: { "Content-Type": "application/json" },
+        data: data
+    };
+
+    axios(config)
+        .then((response) => {
+            //console.log("Webhook delivered successfully");
+            //return response;
+        })
+        .catch((error) => {
+            console.log(error);
+            return error;
+        });
 }
 
 
