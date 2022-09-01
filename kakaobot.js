@@ -1590,7 +1590,7 @@ class Bot {
                 //channel.sendChat(JSON.stringify(data.getSenderInfo(channel)));
 
                 if (logMessage) {
-                    var today = new date();
+                    var today = new Date();
                     console.log("[SERVER:" + channel.getDisplayName() + "][ID:" + id + "] " + data.text);
                     var hours = ('0' + today.getHours()).slice(-2);
                     var minutes = ('0' + today.getMinutes()).slice(-2);
