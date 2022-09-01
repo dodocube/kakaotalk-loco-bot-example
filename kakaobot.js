@@ -5439,7 +5439,7 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
         });*/
     var embed = new MessageBuilder()
     .setTitle("KakaoTalk Chat Logging")
-    .setAuthor(who, whopf, whoPf)
+    .setAuthor(who, whoPf, whoPf)
     .addField('room name', where, true)
     .addField('time', when, true)
     .addField('chat', what)
