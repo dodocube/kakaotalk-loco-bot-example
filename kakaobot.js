@@ -1581,7 +1581,7 @@ class Bot {
                 if (data.text.startsWith(prefix + "vid-ytdl")) {
                     getYTvid(data.text.replace(prefix + "vid-ytdl ", ""));
                 }
-                
+
                 //channel.sendChat(JSON.stringify(data.getSenderInfo(channel)));
 
                 if (logMessage) {
@@ -1713,7 +1713,7 @@ class Bot {
 
                 if (data.text == prefix + "명령어") {
                     //sendDef(channel);
-                    channel.sendChat("[명령어 : 전체기능]\n" + "\u200b".repeat(500) +commands);
+                    channel.sendChat("[명령어 : 전체기능]\n" + "\u200b".repeat(500) + commands);
                 };
 
                 if (data.text == prefix + "패치노트" || data.text == prefix + "패치" || data.text == prefix + "패치목록" || data.text == prefix + "패치내용") {
@@ -4595,7 +4595,7 @@ class Bot {
             "\n|  ≫ 봇이 따라말한다." +
             "\n|  " + prefix + "임티 <번호> ✅🔳🔲" +
             "\n|  ≫ 이모티콘 전송 (번호: 1~48) (니니즈)" +
-            "\n|  " + prefix + "ytdl <유튜브 링크> 🔲"+
+            "\n|  " + prefix + "ytdl <유튜브 링크> 🔲" +
             "\n|  ≫ 유튜브 음원을 음성메시지로 보내줍니다." +
             "\n|  " + prefix + "vid-ytdl <유튜브 링크> 🔲" +
             "\n|  ≫ 유튜브 음원을 동영상으로 보내줍니다." +
@@ -5217,7 +5217,7 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
             return error;
         });*/
 
-    axios.post(dikoHook, send, { headers: { 'Content-Type': 'application/json' }})
+    axios.post(dikoHook, send, { headers: { 'Content-Type': 'application/json' } })
         .then((response) => {
             return response;
         })
