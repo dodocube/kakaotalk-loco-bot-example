@@ -5418,26 +5418,63 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
                 }
             }
         ]    
-    };
+    };*/
+    var webhookData = {
+        "content": "LocoBot Logging",
+        "username": "ACHOO LOCO BOT",
+        "avatar_url": "https://cdn.donmai.us/sample/c6/27/sample-c62707a4860be81689de8208dd2ab5b4.jpg",
+        "embeds": [
+            {
+                "title": "ACHOO LOCO BOT",
+                "description": "Kakaotalk -> Discord",
+                "url": "https://google.com",
+                "color": 15258703,
+                "footer": {
+                    "icon_url": "",
+                    "text": "Powered By Node-Kakao"
+                },
+                "author": {
+                    "name": who,
+                    "url": whopf,
+                    "icon_url": whopf
+                },
+                "fields": [
+                    {
+                        "name": "room name",
+                        "value": where,
+                        "inline": true
+                    },
+                    {
+                        "name": "time",
+                        "value": when,
+                        "inline": true
+                    },
+                    {
+                        "name": "chat",
+                        "value": what
+                    }
+                ]
+            }
+        ]
+    }
 
-    var data = JSON.stringify(params);
+    var data = JSON.stringify(webhookData);
     var config = {
         methood: "POST",
         url: dikoHook,
         headers: { "Content-Type": "application/json" },
-        data: data
+        data: webhookData
     };
 
     axios(config)
         .then((response) => {
-            //console.log("Webhook delivered successfully");
-            //return response;
+            return response;
         })
         .catch((error) => {
             console.log(error);
             return error;
-        });*/
-    var embed = new MessageBuilder()
+        });
+    /*var embed = new MessageBuilder()
     .setTitle("KakaoTalk Chat Logging")
     .setAuthor(who, whoPf, whoPf)
     .addField('room name', where, true)
@@ -5448,7 +5485,7 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
     .setFooter('Powered by Node-Kakao')
     .setTimestamp();
     
-    hook.send(embed);
+    hook.send(embed);*/
 }
 
 
