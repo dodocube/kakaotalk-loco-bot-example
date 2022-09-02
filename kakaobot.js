@@ -5435,8 +5435,8 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
                 },
                 "author": {
                     "name": who,
-                    "url": whopf,
-                    "icon_url": whopf
+                    "url": whoPf,
+                    "icon_url": whoPf
                 },
                 "fields": [
                     {
