@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/williameom5678/kakaotalk-loco-bot.git"
+    "url": "git+https://github.com/williameom5678/kakaotalk-loco-bot-for-me.git"
   },
   "keywords": [
     "node-kakao",
@@ -19,9 +19,9 @@
   "author": "williameom",
   "license": "GPL-2.0-only",
   "bugs": {
-    "url": "https://github.com/williameom5678/kakaotalk-loco-bot/issues"
+    "url": "https://github.com/williameom5678/kakaotalk-loco-bot-for-me/issues"
   },
-  "homepage": "https://github.com/williameom5678/kakaotalk-loco-bot#readme",
+  "homepage": "https://github.com/williameom5678/kakaotalk-loco-bot-for-me#readme",
   "dependencies": {
     "axios": "^0.27.2",
     "bson": "^4.7.0",
