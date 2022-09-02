@@ -11,5 +11,6 @@
   "banKey": "no",
   "ipPort": "3876",
   "klAPI": "",
-  "klURL": ""
+  "klURL": "",
+  "dikoHook": ""
 }
