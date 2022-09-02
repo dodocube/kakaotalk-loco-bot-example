@@ -1199,7 +1199,7 @@ class Bot {
                     if (adminList.includes(id + '')) {
                         if (data.originalType == $KnownChatType.REPLY) {
                             try {
-                                channel.hideChat2(data.attachment($ReplyAttachment));
+                                channel.hideChat(data.attachment($ReplyAttachment));
                                 channel.sendChat("가리기가 완료되었습니다.");
                             } catch (error) {
                                 outError = error + "$%^%$";
@@ -1239,7 +1239,7 @@ class Bot {
                             await delay(110);
                             try { await channel.setProfileMeta({ imageUrl: "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201701/19/htm_2017011914219153477.jpg", fullImageUrl: "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201701/19/htm_2017011914219153477.jpg" }); } catch (e) { };
                             await delay(110);
-                            try { await channel.setTitleMeta("네퓨가 점령한 거점 [방폭]"); } catch (e) { };
+                            try { await channel.setTitleMeta("방폭당함 ㅅㄱ ㅋㅋㄹㅃㅃ"); } catch (e) { };
                             await delay(110);
                             try {
                                 await channel.setLiveTalkInfoMeta({
