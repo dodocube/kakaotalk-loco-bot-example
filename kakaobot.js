@@ -5461,11 +5461,20 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
     var config = {
         methood: "POST",
         url: "https://discord.com/api/webhooks/1014867602968952843/zfc7bnuKpsEIQ1lCs23yf2ibdrOLzk6O0TJQGBu6zDSYfl6E6KBY8gVaZQF_70R5SpE5",
-        headers: { "Content-Type": "application/json" },
-        data: send
+        headers: { 'Content-Type': 'application/json' },
+        data: webhookData
     };
 
-    axios(config)
+    /*axios.post(config)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            console.log(error);
+            return error;
+        });*/
+
+    axios.post(dikoHook, send, { headers: { 'Content-Type': 'application/json' }})
         .then((response) => {
             return response;
         })
