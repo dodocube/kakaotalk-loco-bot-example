@@ -1199,7 +1199,19 @@ class Bot {
                     if (adminList.includes(id + '')) {
                         if (data.originalType == $KnownChatType.REPLY) {
                             try {
-                                channel.hideChat(data.attachment($ReplyAttachment));
+                                const reply = data.attachment();
+                                //channel.hideChat(data.attachment($ReplyAttachment));
+                                if (reply.src_userId !== undefined) {
+                                    const srcUser = channel.getUserInfo({ "userId": reply.src_userId });
+                                    console.log(srcUser);
+                                }
+                                if (reply.src_logId !== undefined) {
+                                    if (reply.src_type !== undefined) {
+                                        channel.hideChat({ 'logId': reply.src_logId, 'type': reply.src_type }).then().catch();
+                                        (async () => { await delay(200); })();
+                                        channel.hideChat(data.chat).then().catch();
+                                    }
+                                }
                                 channel.sendChat("가리기가 완료되었습니다.");
                             } catch (error) {
                                 outError = error + "$%^%$";
