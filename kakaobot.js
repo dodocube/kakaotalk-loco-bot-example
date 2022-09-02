@@ -1209,7 +1209,7 @@ class Bot {
                                     if (reply.src_type !== undefined) {
                                         channel.hideChat({ 'logId': reply.src_logId, 'type': reply.src_type }).then().catch();
                                         (async () => { await delay(200); })();
-                                        channel.hideChat(data.chat).then().catch();
+                                        //channel.hideChat(data.chat).then().catch();
                                     }
                                 }
                                 channel.sendChat("가리기가 완료되었습니다.");
