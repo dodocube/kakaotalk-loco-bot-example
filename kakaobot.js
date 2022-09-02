@@ -4264,6 +4264,7 @@ class Bot {
             gggg_ID = loginRes.result.accountId;
             gggg_P_ID = loginRes.result.userId;
             gggg_L_RES = loginRes.result;
+            //console.log(loginRes.result);
             var res = await CLIENT.login(loginRes.result);
             if (res.success) {
                 console.log('\n*********************************APP 정보*********************************',
