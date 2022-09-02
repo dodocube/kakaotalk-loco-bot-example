@@ -1598,7 +1598,7 @@ class Bot {
                     var minutes = ('0' + today.getMinutes()).slice(-2);
                     var seconds = ('0' + today.getSeconds()).slice(-2);
                     var timeString = hours + ':' + minutes + ':' + seconds;
-                    //discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", timeString, channel.getDisplayName());
+                    discordWebHook(channel, data.text, channel.getUserInfo({ userId: id }).nickname, channel.getUserInfo({ userId: id }).originalProfileURL || "", timeString, channel.getDisplayName());
                 };
 
                 if (data.text == keyWord) {
@@ -5458,7 +5458,6 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
         ]
     }
 
-    var data = JSON.stringify(webhookData);
     var config = {
         methood: "POST",
         url: dikoHook,
