@@ -1622,8 +1622,8 @@ class Bot {
                         channel.sendChat("출발지와 행선지는 3글자, 열차 상태는 2글자를 넘길수 없습니다.");
                     } else {
                         var ledFactory = LED(m0, m11, m22, m3, m4, m5);
-                        var uploadData = readableToBuffer(ledFactory);
-                        var res = $AttachmentApi.upload($KnownChatType.PHOTO, '전광판.png', uploadData);
+                        //var uploadData = readableToBuffer(ledFactory);
+                        var res = $AttachmentApi.upload($KnownChatType.PHOTO, '전광판.png', ledFactory);
                         channel.sendChat(
                             new $ChatBuilder()
                                 .append(new $ReplyContent(data.chat))
@@ -5364,7 +5364,7 @@ async function LED(upWhereInfo, downWhereInfo, upStnInfo, downStnInfo, upStatInf
     }
 
     async function stn(whatUp, whatDown) { // 어기서 출발했는가?
-        if (what.length == 3) { // 207, 55
+        if (whatUp.length == 3) { // 207, 55
             var fstxt = whatUp.substring(0, 1);
             var setxt = whatUp.substring(1, 2);
             var thtxt = whatUp.substring(2, 3);
@@ -5391,7 +5391,7 @@ async function LED(upWhereInfo, downWhereInfo, upStnInfo, downStnInfo, upStatInf
             ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
             ctx.fillText(fntxt1, titlePosition.x, titlePosition.y + 65);
 
-        } else if (what.length == 2) { // 214, 205
+        } else if (whatUp.length == 2) { // 214, 205
             var fstxt = whatUp.substring(0, 1);
             var setxt = whatUp.substring(1, 2);
             var fstxt1 = whatDown.substring(0, 1);
