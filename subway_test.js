@@ -228,13 +228,13 @@ async function LED(whereInfo, stnInfo, upStatInfo, downStatInfo) {
 
     const stream = canvas.createPNGStream();
 
-    const out = fs.createWriteStream('./Led_Test.png');
+    //const out = fs.createWriteStream('./Led_Test.png');
 
     stream.pipe(out);
 
-    out.on("finish", () => {
-        console.log("finished.");
-    });
+    //out.on("finish", () => {
+    //    console.log("finished.");
+    //});
 } 
 
 
