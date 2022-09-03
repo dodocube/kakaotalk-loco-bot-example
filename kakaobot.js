@@ -13,6 +13,8 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+const { loadImage, registerFont, createCanvas, Image } = require('canvas');
+registerFont('./bot/font.otf', { family: 'DungGeunMo' });
 var fs = require('fs');
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); };
 const is = require('is_js');
@@ -1581,6 +1583,58 @@ class Bot {
 
                 if (data.text.startsWith(prefix + "vid-ytdl")) {
                     getYTvid(data.text.replace(prefix + "vid-ytdl ", ""));
+                }
+
+                
+                //var reg0 = new RegExp(`/${station}|\s/ig`);
+                    //var reg1 = new RegExp(/\s\(.*\)|\[.*\]|번째|\s-\s.*|도착|\s|진입|[분후]|전역/ig);
+                        //var reg2 = new RegExp(/\s\(.*\)|\s-\s.*/ig); 
+                            
+                /*if (data.text.startsWith(prefix + "전철")) {
+                    nein = data.text.replace(prefix + "전철 ", "");
+                    //var ledFactory = LED()
+                    // http://swopenapi.seoul.go.kr/api/subway/sample/json/realtimeStationArrival/0/5/%EC%8B%A0%EB%8F%84%EB%A6%BC
+                    //http://openapi.seoul.go.kr:8088/sample/json/SearchInfoBySubwayNameService/1/5/%EC%A2%85%EB%A1%9C3%EA%B0%80/
+                    axios.get("http://swopenapi.seoul.go.kr/api/subway/"+subwayAPI+"/json/realtimeStationArrival/0/5/" + nein)
+                    //axios.get("http://openapi.seoul.go.kr:8088" + subwayAPI + "SearchInfoBySubwayNameService/1/5/" + nein + "/");
+                    .then(response => {
+                        if (response.data['errorMessage']['code'] == "INFO-000") {
+                            if () {
+
+                            }
+                        } else {
+                            channel.sendChat("처리중 오류가 발생하였습니다.");
+                        }
+                    }).catch((error) => {
+
+                    })
+                }*/
+
+                if (data.text.startsWith(prefix + "전광판")) {
+                    // 용산%인천%출발%인천%용산%접근
+                    var m0 = data.text.replace(prefix + "전광판 ", "").split('%')[0];
+                    var m11 = data.text.replace(prefix + "전광판 ", "").split('%')[1];
+                    var m22 = data.text.replace(prefix + "전광판 ", "").split('%')[2];
+                    var m3 = data.text.replace(prefix + "전광판 ", "").split('%')[3];
+                    var m4 = data.text.replace(prefix + "전광판 ", "").split('%')[4];
+                    var m5 = data.text.replace(prefix + "전광판 ", "").split('%')[5];
+                    if (m0.length > 3 || m11.length > 3 || m22.length > 2 || m3.length > 3 || m4.length > 3 || m5.length > 2) {
+                        channel.sendChat("출발지와 행선지는 3글자, 열차 상태는 2글자를 넘길수 없습니다.");
+                    } else {
+                        var ledFactory = LED(m0, m11, m22, m3, m4, m5);
+                        var uploadData = readableToBuffer(ledFactory);
+                        var res = $AttachmentApi.upload($KnownChatType.PHOTO, '전광판.png', uploadData);
+                        channel.sendChat(
+                            new $ChatBuilder()
+                                .append(new $ReplyContent(data.chat))
+                                .attachment(res.result)
+                                .attachment({
+                                    "width": "770",
+                                    "height": "300",
+                                })
+                                .build($KnownChatType.PHOTO)
+                        );
+                    }
                 }
 
                 //channel.sendChat(JSON.stringify(data.getSenderInfo(channel)));
@@ -4600,6 +4654,8 @@ class Bot {
             "\n|  ≫ 유튜브 음원을 음성메시지로 보내줍니다." +
             "\n|  " + prefix + "vid-ytdl <유튜브 링크> 🔲" +
             "\n|  ≫ 유튜브 음원을 동영상으로 보내줍니다." +
+            "\n|  " + prefix + "전광판 <상행행선지>%<출발역>%<출발/도착/접근>%<하행행선지>%<출발역>%<출발/도착/접근> ✅🔳🔲" + // 용산%인천%출발%인천%용산%접근
+            "\n|  ≫ 한국철도공사 행선지 전광판을 흉내냅니다." +
             "\n[------------------관리기능------------------]" +
             "\n|  ■■■■ 특수관리기능 ■■■■" +
             "\n|  " + prefix + "자동등록 ✅🔳🔲" +
@@ -5239,6 +5295,254 @@ function discordWebHook(_kakaoChannel, what, who, whoPf, when, where) {
     
     hook.send(embed);*/
 }
+
+async function LED(upWhereInfo, downWhereInfo, upStnInfo, downStnInfo, upStatInfo, downStatInfo) {
+    //var img = await loadImage('./bot/led.png');
+    //var canvas = createCanvas(img.width, img.height);
+    // 770, 300
+    var canvas = createCanvas(770, 300);
+    var ctx = canvas.getContext('2d');
+    ctx.font = "54px DungGeunMo";
+    //ctx.drawImage(img, img.width, img.height);
+
+    ctx.fillRect(0, 0, 770, 300);
+    async function where(uptoGo, downtoGo) { // 행선지가 어디인가?
+        if (uptoGo.length == 3 || downtoGo.length == 3) { // 207, 55
+            var fstxt = uptoGo.substring(0, 1);
+            var setxt = uptoGo.substring(1, 2);
+            var thtxt = uptoGo.substring(2, 3);
+            var fstxt1 = uptoGo.substring(0, 1);
+            var setxt2 = uptoGo.substring(1, 2);
+            var thtxt3 = uptoGo.substring(2, 3);
+            var fntxt = fstxt + ' ' + setxt + ' ' + thtxt + ' 행';
+            var fntxt1 = fstxt1 + ' ' + setxt2 + ' ' + thtxt3 + ' 행';
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);
+            const titlePosition = {
+                x: 214,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#fb8d19";
+            ctx.textAlign = "center";
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
+            ctx.fillText(fntxt1, titlePosition.x, titlePosition.y + 65);
+
+        } else if (uptoGo.length == 2 || downtoGo.length == 2) { // 214, 205
+            var fstxt = uptoGo.substring(0, 1);
+            var setxt = uptoGo.substring(1, 2);
+            var fstxt1 = downtoGo.substring(0, 1);
+            var setxt2 = downtoGo.substring(1, 2);
+            var fntxt = fstxt + ' ' + setxt + ' 행';
+            var fntxt1 = fstxt1 + ' ' + setxt2 + ' 행';
+
+            /*const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);*/
+            const titlePosition = {
+                x: 214,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#fb8d19";
+            ctx.textAlign = "center";
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
+            ctx.fillText(fntxt1, titlePosition.x, titlePosition.y + 65);
+
+        }
+    }
+
+    async function stn(whatUp, whatDown) { // 어기서 출발했는가?
+        if (what.length == 3) { // 207, 55
+            var fstxt = whatUp.substring(0, 1);
+            var setxt = whatUp.substring(1, 2);
+            var thtxt = whatUp.substring(2, 3);
+            var fstxt1 = whatDown.substring(0, 1);
+            var setxt2 = whatDown.substring(1, 2);
+            var thtxt3 = whatDown.substring(2, 3);
+            var fntxt = fstxt + ' ' + setxt + ' ' + thtxt;
+            var fntxt1 = fstxt1 + ' ' + setxt2 + ' ' + thtxt3;
+            /*const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);*/
+            const titlePosition = {
+                x: 430,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#5C6F0E";
+            ctx.textAlign = "center";
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
+            ctx.fillText(fntxt1, titlePosition.x, titlePosition.y + 65);
+
+        } else if (what.length == 2) { // 214, 205
+            var fstxt = whatUp.substring(0, 1);
+            var setxt = whatUp.substring(1, 2);
+            var fstxt1 = whatDown.substring(0, 1);
+            var setxt2 = whatDown.substring(1, 2);
+            var fntxt = fstxt + ' ' + setxt;
+            var fntxt1 = fstxt1 + ' ' + setxt2;
+
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);
+            const titlePosition = {
+                x: 430,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#5C6F0E";
+            ctx.textAlign = "center";
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
+            ctx.fillText(fntxt1, titlePosition.x, titlePosition.y + 65);
+
+        }
+    }
+
+    async function stats(up, down) { // 도착=0, 출발=1, 접근=2 508, 100
+        var xPos = 600;
+        if (up == 0) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(up);
+            const titlePosition = {
+                x: xPos,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("도 착", titlePosition.x, titlePosition.y);
+        } else if (up == 1) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(up);
+            const titlePosition = {
+                x: xPos,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("출 발", titlePosition.x, titlePosition.y);
+        } else {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(up);
+            const titlePosition = {
+                x: xPos,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("접 근", titlePosition.x, titlePosition.y);
+        }
+        if (down == 0) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(down);
+            const titlePosition = {
+                x: xPos,
+                y: 205,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("도 착", titlePosition.x, titlePosition.y);
+        } else if (down == 1) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(down);
+            const titlePosition = {
+                x: xPos,
+                y: 205,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("출 발", titlePosition.x, titlePosition.y);
+        } else {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(down);
+            const titlePosition = {
+                x: xPos,
+                y: 205,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("접 근", titlePosition.x, titlePosition.y);
+        }
+    }
+
+    await where(upWhereInfo, downWhereInfo);
+    await stn(upStnInfo, downStnInfo);
+    await stats(upStatInfo, downStatInfo);
+
+    const stream = canvas.createPNGStream();
+
+    //const out = fs.createWriteStream('./Led_Test.png');
+    var output;
+    stream.pipe(output);
+
+    //out.on("finish", () => {
+    //    console.log("finished.");
+    //});
+    return output;
+} 
 
 
 async function start() {
