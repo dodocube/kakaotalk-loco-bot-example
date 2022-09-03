@@ -239,4 +239,4 @@ async function LED(whereInfo, stnInfo, upStatInfo, downStatInfo) {
 
 
 
-LED("용산", "동인천", 1, 0);
+//LED("용산", "동인천", 1, 0);
