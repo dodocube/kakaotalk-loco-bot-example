@@ -43,7 +43,7 @@ try {
     console.log(e);
 };
 getInfo = JSON.parse(getInfo);
-let { email, pw, deviceName, deviceUUID, prefix, autoAdmin, openVerify, useCustomCode, openCustomCode, banKey, ipPort, dikoHook } = getInfo;
+let { email, pw, deviceName, deviceUUID, prefix, autoAdmin, openVerify, useCustomCode, openCustomCode, banKey, ipPort, dikoHook, subwayAPI } = getInfo;
 ipPort *= 1;
 let ipLog_local;
 let ipLog_admin = getDnsIp.address();
@@ -1569,6 +1569,7 @@ class Bot {
                                 //.attachment({ d: vidLength })
                                 .build($KnownChatType.VIDEO)
                         );
+                        console.log(uploadData);
                     } catch (err) {
                         channel.sendChat(`처리중 오류가 발생했습니다. err: ${err} at Line ${err.lineNumber}`);
                     }

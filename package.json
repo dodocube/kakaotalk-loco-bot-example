@@ -25,6 +25,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "bson": "^4.7.0",
+    "canvas": "^2.9.3",
     "cheerio": "^1.0.0-rc.12",
     "discord-webhook-node": "^1.1.8",
     "express": "^4.18.1",
