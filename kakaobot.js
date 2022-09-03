@@ -1421,7 +1421,7 @@ class Bot {
             };
         });
 
-        CLIENT.on('chat', (data, channel) => {
+        CLIENT.on('chat', async (data, channel) => {
             const sender = data.getSenderInfo(channel);
             if (!sender) return;
             args = data.text.split(" ");
@@ -1588,8 +1588,8 @@ class Bot {
                 
                 //var reg0 = new RegExp(`/${station}|\s/ig`);
                     //var reg1 = new RegExp(/\s\(.*\)|\[.*\]|번째|\s-\s.*|도착|\s|진입|[분후]|전역/ig);
-                        //var reg2 = new RegExp(/\s\(.*\)|\s-\s.*/ig); 
-                            
+                        //var reg2 = new RegExp(/\s\(.*\)|\s-\s.*/ig);
+
                 /*if (data.text.startsWith(prefix + "전철")) {
                     nein = data.text.replace(prefix + "전철 ", "");
                     //var ledFactory = LED()
@@ -1609,31 +1609,44 @@ class Bot {
 
                     })
                 }*/
-
+                // LED(upWhereInfo, downWhereInfo, upStnInfo, downStnInfo, upStatInfo, downStatInfo)
                 if (data.text.startsWith(prefix + "전광판")) {
-                    // 용산%인천%출발%인천%용산%접근
+                  
                     var m0 = data.text.replace(prefix + "전광판 ", "").split('%')[0];
                     var m11 = data.text.replace(prefix + "전광판 ", "").split('%')[1];
                     var m22 = data.text.replace(prefix + "전광판 ", "").split('%')[2];
                     var m3 = data.text.replace(prefix + "전광판 ", "").split('%')[3];
                     var m4 = data.text.replace(prefix + "전광판 ", "").split('%')[4];
                     var m5 = data.text.replace(prefix + "전광판 ", "").split('%')[5];
+                    console.log(m0); // 용산
+                    console.log(m11); // 인천
+                    console.log(m22); // 1
+                    console.log(m3); // 서울
+                    console.log(m4); // 구로
+                    console.log(m5); // 2
                     if (m0.length > 3 || m11.length > 3 || m22.length > 2 || m3.length > 3 || m4.length > 3 || m5.length > 2) {
                         channel.sendChat("출발지와 행선지는 3글자, 열차 상태는 2글자를 넘길수 없습니다.");
                     } else {
-                        var ledFactory = LED(m0, m11, m22, m3, m4, m5);
-                        //var uploadData = readableToBuffer(ledFactory);
-                        var res = $AttachmentApi.upload($KnownChatType.PHOTO, '전광판.png', ledFactory);
-                        channel.sendChat(
+                        var LEDdata = await LED(m0, m3, m11, m4, m22, m5);
+                        //var uploadData = await readableToBuffer(ledFactory);
+                        /*var upload = fs.readFileSync('./bot/Led_Test.png', (err, data) => { 
+                            if (err) throw err; 
+                            return data;
+                        });*/
+                        //var uploadData = readableToBuffer(upload);
+                        //var upload = buf2.toString();
+                        var res = await $AttachmentApi.upload($KnownChatType.PHOTO, '전광판.png', LEDdata);
+                        await channel.sendChat(
                             new $ChatBuilder()
                                 .append(new $ReplyContent(data.chat))
                                 .attachment(res.result)
                                 .attachment({
-                                    "width": "770",
-                                    "height": "300",
+                                   "width": "770",
+                                   "height": "300"
                                 })
                                 .build($KnownChatType.PHOTO)
                         );
+                        //console.log(upload);
                     }
                 }
 
@@ -4654,7 +4667,7 @@ class Bot {
             "\n|  ≫ 유튜브 음원을 음성메시지로 보내줍니다." +
             "\n|  " + prefix + "vid-ytdl <유튜브 링크> 🔲" +
             "\n|  ≫ 유튜브 음원을 동영상으로 보내줍니다." +
-            "\n|  " + prefix + "전광판 <상행행선지>%<출발역>%<출발/도착/접근>%<하행행선지>%<출발역>%<출발/도착/접근> ✅🔳🔲" + // 용산%인천%출발%인천%용산%접근
+            "\n|  " + prefix + "전광판 <상행행선지>%<출발역>%<0=도착,1=출발>%<하행행선지>%<출발역>%<0=도착,1=출발> ✅🔳🔲" + // 용산%인천%출발%인천%용산%접근
             "\n|  ≫ 한국철도공사 행선지 전광판을 흉내냅니다." +
             "\n[------------------관리기능------------------]" +
             "\n|  ■■■■ 특수관리기능 ■■■■" +
@@ -5364,7 +5377,7 @@ async function LED(upWhereInfo, downWhereInfo, upStnInfo, downStnInfo, upStatInf
     }
 
     async function stn(whatUp, whatDown) { // 어기서 출발했는가?
-        if (whatUp.length == 3) { // 207, 55
+        if (whatUp.length == 3 || whatDown.length == 3) { // 207, 55
             var fstxt = whatUp.substring(0, 1);
             var setxt = whatUp.substring(1, 2);
             var thtxt = whatUp.substring(2, 3);
@@ -5391,7 +5404,7 @@ async function LED(upWhereInfo, downWhereInfo, upStnInfo, downStnInfo, upStatInf
             ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
             ctx.fillText(fntxt1, titlePosition.x, titlePosition.y + 65);
 
-        } else if (whatUp.length == 2) { // 214, 205
+        } else if (whatUp.length == 2 || whatDown.length == 2) { // 214, 205
             var fstxt = whatUp.substring(0, 1);
             var setxt = whatUp.substring(1, 2);
             var fstxt1 = whatDown.substring(0, 1);
@@ -5532,16 +5545,22 @@ async function LED(upWhereInfo, downWhereInfo, upStnInfo, downStnInfo, upStatInf
     await stn(upStnInfo, downStnInfo);
     await stats(upStatInfo, downStatInfo);
 
-    const stream = canvas.createPNGStream();
+    //var stream = canvas.createPNGStream();
+    var buf2 = canvas.toBuffer('image/png', { compressionLevel: 3, filters: canvas.PNG_FILTER_NONE })
 
-    //const out = fs.createWriteStream('./Led_Test.png');
-    var output;
-    stream.pipe(output);
+    //const out = fs.createWriteStream('./bot/Led_Test.png');
+    //var output;
+    //var buff = new Buffer();
+    //stream.pipe(buff);
 
     //out.on("finish", () => {
     //    console.log("finished.");
     //});
-    return output;
+    //var rtnValue = buf2.toString();
+    //console.log(buf2);
+    var LEDupload = buf2;
+    //console.log(LEDupload);
+    return LEDupload;
 } 
 
 
