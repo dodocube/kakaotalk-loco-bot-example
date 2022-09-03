@@ -1,184 +1,242 @@
 const { loadImage, registerFont, createCanvas, Image } = require('canvas');
+registerFont('./bot/font.otf', { family: 'DungGeunMo' });
+const fs = require("fs");
 const whoMadeIt = "williameom";
-path = [];
 const fileName = 'Led_Test.png';
-const filepath = path.join('/', fileName);
 
-async function LED(debug) {
-    if(!debug) {
-        var img = await loadImage('/bot/led.png');
-        var canvas = createCanvas(img.width, img.height);
+async function LED(whereInfo, stnInfo, upStatInfo, downStatInfo) {
+    //var img = await loadImage('./bot/led.png');
+    //var canvas = createCanvas(img.width, img.height);
+    // 770, 300
+    var canvas = createCanvas(770, 300);
+    var ctx = canvas.getContext('2d');
+    ctx.font = "54px DungGeunMo";
+    //ctx.drawImage(img, img.width, img.height);
 
-        registerFont('/bot/font.ttf', { family: 'DungGeunMo' });
+    ctx.fillRect(0, 0, 770, 300);
+    async function where(toGo) { // 행선지가 어디인가?
+        if (toGo.length == 3) { // 207, 55
+            var fstxt = toGo.substring(0, 1);
+            var setxt = toGo.substring(1, 2);
+            var thtxt = toGo.substring(2, 3);
+            var fntxt = fstxt + ' ' + setxt + ' ' + thtxt + ' 행';
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);
+            const titlePosition = {
+                x: 214,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#fb8d19";
+            ctx.textAlign = "center";
+            ctx.fillText(title, titlePosition.x, titlePosition.y);
+            ctx.fillText(title, titlePosition.x, titlePosition.y + 65);
 
-        var ctx = canvas.getContext('2d');
-        ctx.font = "36px DunGeunMo";
-        ctx.drawImage(img, img.width, img.height);
+        } else if (toGo.length == 2) { // 214, 205
+            var fstxt = toGo.substring(0, 1);
+            var setxt = toGo.substring(1, 2);
+            var fntxt = fstxt + ' ' + setxt + ' 행';
 
+            /*const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);*/
+            const titlePosition = {
+                x: 214,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#fb8d19";
+            ctx.textAlign = "center";
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y + 65);
 
-        async function where(toGo) { // 행선지가 어디인가?
-            if (toGo.length == 3) { // 207, 55
-                var fstxt = toGo.substring(0, 0);
-                var setxt = toGo.substring(1, 1);
-                var thtxt = toGo.substring(2, 2);
-                var fntxt = fstxt + ' ' + setxt + ' ' + thtxt + ' 행';
-                const {
-                    actualBoundingBoxLeft,
-                    actualBoundingBoxRight,
-                    emHeightAscent: titleHeight,
-                    actualBoundingBoxAscent,
-                    actualBoundingBoxDescent,
-                    emHeightDescent,
-                } = ctx.measureText(fntxt);
-                const titlePosition = {
-                    x: 214,
-                    y: 140,
-                };
-                // - ((textPaint.descent() + textPaint.ascent()) / 2
-                ctx.fillStyle = "#fb8d19";
-                ctx.textAlign = "center";
-                ctx.fillText(title, titlePosition.x, titlePosition.y);
-                ctx.fillText(title, titlePosition.x, titlePosition.y + 65);
-
-            } else if (toGo.length == 2) { // 214, 205
-                var fstxt = toGo.substring(0, 0);
-                var setxt = toGo.substring(1, 1);
-                var fntxt = fstxt + ' ' + setxt + ' 행';
-
-                const {
-                    actualBoundingBoxLeft,
-                    actualBoundingBoxRight,
-                    emHeightAscent: titleHeight,
-                    actualBoundingBoxAscent,
-                    actualBoundingBoxDescent,
-                    emHeightDescent,
-                } = ctx.measureText(fntxt);
-                const titlePosition = {
-                    x: 214,
-                    y: 140,
-                };
-                // - ((textPaint.descent() + textPaint.ascent()) / 2
-                ctx.fillStyle = "#fb8d19";
-                ctx.textAlign = "center";
-                ctx.fillText(title, titlePosition.x, titlePosition.y);
-                ctx.fillText(title, titlePosition.x, titlePosition.y + 65);
-
-            }
         }
-
-        async function stn(what) { // 어기서 출발했는가?
-            if (what.length == 3) { // 207, 55
-                var fstxt = what.substring(0, 0);
-                var setxt = what.substring(1, 1);
-                var thtxt = what.substring(2, 2);
-                var fntxt = fstxt + ' ' + setxt + ' ' + thtxt + ' 행';
-                const {
-                    actualBoundingBoxLeft,
-                    actualBoundingBoxRight,
-                    emHeightAscent: titleHeight,
-                    actualBoundingBoxAscent,
-                    actualBoundingBoxDescent,
-                    emHeightDescent,
-                } = ctx.measureText(fntxt);
-                const titlePosition = {
-                    x: 412,
-                    y: 140,
-                };
-                // - ((textPaint.descent() + textPaint.ascent()) / 2
-                ctx.fillStyle = "#5C6F0E";
-                ctx.textAlign = "center";
-                ctx.fillText(title, titlePosition.x, titlePosition.y);
-                ctx.fillText(title, titlePosition.x, titlePosition.y + 65);
-
-            } else if (what.length == 2) { // 214, 205
-                var fstxt = what.substring(0, 0);
-                var setxt = what.substring(1, 1);
-                var fntxt = fstxt + ' ' + setxt + ' 행';
-
-                const {
-                    actualBoundingBoxLeft,
-                    actualBoundingBoxRight,
-                    emHeightAscent: titleHeight,
-                    actualBoundingBoxAscent,
-                    actualBoundingBoxDescent,
-                    emHeightDescent,
-                } = ctx.measureText(fntxt);
-                const titlePosition = {
-                    x: 412,
-                    y: 140,
-                };
-                // - ((textPaint.descent() + textPaint.ascent()) / 2
-                ctx.fillStyle = "#5C6F0E";
-                ctx.textAlign = "center";
-                ctx.fillText(title, titlePosition.x, titlePosition.y);
-                ctx.fillText(title, titlePosition.x, titlePosition.y + 65);
-
-            }
-        }
-
-        async function stats(idk) { // 도착, 출발, 접근
-            var arrive = await loadImage('/bot/arrival.png');
-            var depart = await loadImage('/bot/depart.png');
-            var closer = await loadImage('/bot/close.png');
-            var moll1u = await loadImage('/bot/mollu.png');
-            switch (idk) {
-                case 1: // 1번칸 도착, 2번칸 도착
-                    ctx.drawImage(arrive, 508, 111);
-                    ctx.drawImage(arrive, 508, 179);
-                    break;
-                case 2: // 1번칸 도착, 2번칸 출발
-                    ctx.drawImage(arrive, 508, 111);
-                    ctx.drawImage(closer, 508, 179);
-                    break;
-                case 3: // 1번칸 도착, 2번칸 접근
-                    ctx.drawImage(arrive, 508, 111);
-                    ctx.drawImage(closer, 508, 179);
-                    break;
-                case 4: // 1번칸 출발, 2번칸 도착
-                    ctx.drawImage(depart, 508, 111);
-                    ctx.drawImage(arrive, 508, 179);
-                    break;
-                case 5: // 1번칸 출발, 2번칸 출발
-                    ctx.drawImage(depart, 508, 111);
-                    ctx.drawImage(depart, 508, 179);
-                    break;
-                case 6: // 1번칸 출발, 2번칸 접근
-                    ctx.drawImage(depart, 508, 111);
-                    ctx.drawImage(closer, 508, 179);
-                    break;
-                case 7: // 1번칸 접근, 2번칸 도착
-                    ctx.drawImage(closer, 508, 111);
-                    ctx.drawImage(arrive, 508, 179);
-                    break;
-                case 8: // 1번칸 접근, 2번칸 접근
-                    ctx.drawImage(closer, 508, 111);
-                    ctx.drawImage(closer, 508, 179);
-                    break;
-                case 9: // 1번칸 접근, 2번칸 출발
-                    ctx.drawImage(closer, 508, 111);
-                    ctx.drawImage(depart, 508, 179);
-                    break;
-                default: // 몰?루
-                    ctx.drawImage(moll1u, 508, 111);
-                    ctx.drawImage(moll1u, 508, 179);
-                    break;
-            }
-        }
-
-        const stream = cnavas.createPNGStream();
-
-        const out = fs.createWriteStream(filepath);
-
-        stream.pipe(out);
-
-        out.on("finish", () => {
-            resolve(filepath);
-        });
-    } else if (debug) {
-        where("용산");
-        stn("서울");
-        stats(1);
     }
-}
 
-LED(true);
+    async function stn(what) { // 어기서 출발했는가?
+        if (what.length == 3) { // 207, 55
+            var fstxt = what.substring(0, 1);
+            var setxt = what.substring(1, 2);
+            var thtxt = what.substring(2, 3);
+            var fntxt = fstxt + ' ' + setxt + ' ' + thtxt;
+            /*const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);*/
+            const titlePosition = {
+                x: 430,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#5C6F0E";
+            ctx.textAlign = "center";
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y + 65);
+
+        } else if (what.length == 2) { // 214, 205
+            var fstxt = what.substring(0, 1);
+            var setxt = what.substring(1, 2);
+            var fntxt = fstxt + ' ' + setxt ;
+
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(fntxt);
+            const titlePosition = {
+                x: 430,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#5C6F0E";
+            ctx.textAlign = "center";
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y);
+            ctx.fillText(fntxt, titlePosition.x, titlePosition.y + 65);
+
+        }
+    }
+
+    async function stats(up, down) { // 도착=0, 출발=1, 접근=2 508, 100
+        var xPos = 600;
+        if(up == 0) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(up);
+            const titlePosition = {
+                x: xPos,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("도 착", titlePosition.x, titlePosition.y);
+        } else if(up == 1) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(up);
+            const titlePosition = {
+                x: xPos,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("출 발", titlePosition.x, titlePosition.y);
+        } else {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(up);
+            const titlePosition = {
+                x: xPos,
+                y: 140,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("접 근", titlePosition.x, titlePosition.y);
+        }
+        if(down == 0) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(down);
+            const titlePosition = {
+                x: xPos,
+                y: 205,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("도 착", titlePosition.x, titlePosition.y);
+        } else if(down == 1) {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(down);
+            const titlePosition = {
+                x: xPos,
+                y: 205,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("출 발", titlePosition.x, titlePosition.y);
+        } else {
+            const {
+                actualBoundingBoxLeft,
+                actualBoundingBoxRight,
+                emHeightAscent: titleHeight,
+                actualBoundingBoxAscent,
+                actualBoundingBoxDescent,
+                emHeightDescent,
+            } = ctx.measureText(down);
+            const titlePosition = {
+                x: xPos,
+                y: 205,
+            };
+            // - ((textPaint.descent() + textPaint.ascent()) / 2
+            ctx.fillStyle = "#b22222";
+            ctx.textAlign = "center";
+            ctx.fillText("접 근", titlePosition.x, titlePosition.y);
+        }
+    }
+
+    await where(whereInfo);
+    await stn(stnInfo);
+    await stats(upStatInfo, downStatInfo);
+
+    const stream = canvas.createPNGStream();
+
+    const out = fs.createWriteStream('./Led_Test.png');
+
+    stream.pipe(out);
+
+    out.on("finish", () => {
+        console.log("finished.");
+    });
+} 
+
+
+
+LED("용산", "동인천", 1, 0);
