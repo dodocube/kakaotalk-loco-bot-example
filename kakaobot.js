@@ -7,7 +7,7 @@
 
 // 1484줄부터 내가 추가한거
 // 5373
-// hello, world
+// hello, world!
 
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
