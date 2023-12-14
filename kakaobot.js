@@ -81,10 +81,10 @@ let editConfig = {
     locoBookingHost: 'booking-loco.kakao.com',
     locoBookingPort: 443,
     // eslint-disable-next-line max-len
-    locoPEMPublicKey: `-----BEGIN PUBLIC KEY-----\nMIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEApElgRBx+g7sniYFW7LE8ivrwXShKTRFV8lXNItMXbN5QSC8vJ/cTSOTS619Xv5Zx7xXJIk4EKxtWesEGbgZpEUP2xQ+IeH9oz0JxayEMvvD1nVNAWgpWE4pociEoArsK7qY3YwXb1CiDHo9hojLv7djbo3cwXvlyMh4TUrX2RjCZPlVJxk/LVjzcl9ohJLkl3eoSrf0AE4kQ9mk3+raEhq5Dv+IDxKYX+fIytUWKmrQJusjtre9oVUX5sBOYZ0dzez/XapusEhUWImmB6mciVXfRXQ8IK4IH6vfNyxMSOTfLEhRYN2SMLzplAYFiMV536tLS3VmG5GJRdkpDubqPeQIBAw==\n-----END PUBLIC KEY-----`,
+    locoPEMPublicKey: `-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg6VCr0AjZw6uENkIHTZk9vByc8Z+cIxD8BNTDeRpner8cQ8hkB4aGp9JJU8ULwdpQdQ9/xwTZepc1Uq3K/tOyNGXvJZwiOa0lt2MUNnZkGOzrOjuK/U4CaGdJsm96qBN6S4JEvMRQSsmzgyRguZJ05bjyYwhEs0MK+Zdi+7OrPHW21CciI7uR852zgO8jLRDYAX2c5Gi98YKMNzKqhrfpO3CMHKaqM+ltoVTgmrZ3zCFywhaJA7W8+wlK5FVhEO9AB7yxZoRO7QxPOtM6oMzbqUY4pN+OAKZcnN4dc3wnGWpYKY5j2L554qpF4JkI/Hldq1nNk5QQvtC1ksXteSs/wIDAQAB\n-----END PUBLIC KEY-----`,
     agent: 'win32',
-    version: '3.3.8',
-    appVersion: '3.3.8.3058',
+    version: '3.6.7',
+    appVersion: '3.6.7.3673',
     osVersion: '10.0',
     // 2 == sub, 1 == main
     deviceType: 2,
@@ -130,9 +130,9 @@ class Bot {
         let gggg_ID = "";
         let gggg_P_ID = "";
         let gggg_L_RES = "";
-        let ver = "10.0.2";
+        let ver = "10.0.3";
         let kakaoVer = "4.5.1";
-        let lastUpdate = "2022.08.29";
+        let lastUpdate = "2023.12.14";
         const ACC_EMAIL = _ACCOUNT.split(' ')[0];
         const ACC_PASSWORD = _ACCOUNT.split(' ')[1];
         const ACC_UUID = _ACCOUNT.split(' ')[2];
@@ -4339,8 +4339,8 @@ class Bot {
                     '\n');
                 //
                 SessionWebClient = await node_kakao.api.createSessionWebClient(
-                    loginRes.result,
-                    {
+                    loginRes.result, editConfig, 
+                    /*{
                         locoBookingHost: "booking-loco.kakao.com",
                         locoBookingPort: 443,
                         locoPEMPublicKey: `---- - BEGIN PUBLIC KEY-----\nMIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEApElgRBx + g7sniYFW7LE8ivrwXShKTRFV8lXNItMXbN5QSC8vJ / cTSOTS619Xv5Zx7xXJIk4EKxtWesEGbgZpEUP2xQ + IeH9oz0JxayEMvvD1nVNAWgpWE4pociEoArsK7qY3YwXb1CiDHo9hojLv7djbo3cwXvlyMh4TUrX2RjCZPlVJxk / LVjzcl9ohJLkl3eoSrf0AE4kQ9mk3 + raEhq5Dv + IDxKYX + fIytUWKmrQJusjtre9oVUX5sBOYZ0dzez / XapusEhUWImmB6mciVXfRXQ8IK4IH6vfNyxMSOTfLEhRYN2SMLzplAYFiMV536tLS3VmG5GJRdkpDubqPeQIBAw ==\n----- END PUBLIC KEY-----`,
@@ -4356,7 +4356,7 @@ class Bot {
                         subDevice: true,
                         deviceModel: "",
                         loginTokenSeedList: ["PITT", "INORAN"],
-                    },
+                    },*/
                     "https",
                     "katalk.kakao.com"
                 );
@@ -4389,6 +4389,8 @@ class Bot {
                 "\n|  1.  다중 키워드 추가" +
                 "\n|  2.  지하철/버스 도착시간 확인기능 추가" +
                 "\n|  3.  사용자 차단" +
+                "\n[------------------V10.0.3------------------]" +
+                "\n|  1. 인증서 문제 수정(?)" +
                 "\n[------------------V10.0.2------------------]" +
                 "\n|  1.  화면임티 명령어 추가" +
                 "\n|  2.  임티5 명령어 추가" +
